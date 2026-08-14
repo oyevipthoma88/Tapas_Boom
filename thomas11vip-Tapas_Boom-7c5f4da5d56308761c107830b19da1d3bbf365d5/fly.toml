@@ -1,0 +1,41 @@
+# Tapas Boom — Fly.io config (Mumbai / India egress IP).
+# Ye "permanent" jugaad hai: Heroku USA IP band, Fly bom region
+# se app chalti hai → egress India se, TCP-block/403 khatam.
+#
+# Ek baar setup:
+#   1. `fly auth login`  (https://fly.io/app/sign-up — free)
+#   2. `fly launch --copy-config --no-deploy --region bom`  (app naam choose karo)
+#   3. `fly secrets set TELEGRAM_BOT_TOKEN=xxxx`
+#      (optional) `fly secrets set WORKER_RELAY_URL=https://your.workers.dev`
+#   4. `fly deploy`
+#   5. `fly scale count 1 --region bom`   (sirf Mumbai me pin karo)
+#   6. Heroku dyno OFF karo — Fly Mumbai ab primary hai.
+
+app = "tapas-boom"
+primary_region = "bom"           # Mumbai — India egress IP (permanent)
+kill_signal = "SIGINT"
+kill_timeout = 30
+
+[build]
+  dockerfile = "Dockerfile"
+
+[env]
+  PORT = "8080"
+  # WORKER_RELAY_URL / PING_URL / WEBHOOK_URL etc. `fly secrets set` se do.
+
+[[vm]]
+  cpu_kind = "shared"
+  cpus     = 1
+  memory   = "512mb"
+
+# No [http_service] — bot long-polling hai, koi inbound port nahi.
+# Agar webhook mode chahiye to niche uncomment karo aur WEBHOOK_URL set karo.
+# [http_service]
+#   internal_port  = 8080
+#   force_https    = true
+#   auto_stop_machines  = false
+#   auto_start_machines = true
+#   min_machines_running = 1
+
+[deploy]
+  strategy = "immediate"

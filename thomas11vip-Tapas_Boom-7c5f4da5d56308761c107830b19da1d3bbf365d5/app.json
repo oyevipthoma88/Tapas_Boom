@@ -1,0 +1,25 @@
+{
+  "name": "Tapas Boom Bot v3",
+  "description": "Telegram OTP bot — SMS+Call+WA — 33 jugaad + 50+ APIs — Heroku USA working",
+  "repository": "https://github.com/thomas82822/Tapas_Boom",
+  "stack": "heroku-26",
+  "keywords": ["python", "telegram", "bot", "otp", "sms", "call", "whatsapp"],
+  "env": {
+    "TELEGRAM_BOT_TOKEN": {
+      "description": "Telegram Bot Token — @BotFather se /newbot karke lo",
+      "required": true,
+      "value": ""
+    }
+  },
+  "formation": {
+    "web": {
+      "quantity": 1,
+      "size": "standard-2x"
+    }
+  },
+  "buildpacks": [
+    {
+      "url": "heroku/python"
+    }
+  ]
+}
