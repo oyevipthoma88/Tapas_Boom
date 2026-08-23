@@ -584,6 +584,58 @@ def _register_user_api(spec: dict) -> str:
     SMS_APIS.append(spec)
     return spec["name"]
 
+
+def _parse_api_payload(raw: str) -> list:
+    """Accept many formats and return list of API spec dicts.
+
+    Supports JSON object, JSON array, JSONL (one JSON per line),
+    or plain URLs (one per line). Lines starting with '#' or '//' ignored.
+    """
+    import json as _j
+    raw = (raw or "").strip().lstrip("\ufeff")
+    if not raw:
+        raise ValueError("empty payload")
+    try:
+        obj = _j.loads(raw)
+        if isinstance(obj, dict):
+            return [obj]
+        if isinstance(obj, list):
+            return [x for x in obj if isinstance(x, dict)]
+    except Exception:
+        pass
+    specs: list = []
+    for line in raw.splitlines():
+        s = line.strip().strip(",")
+        if not s or s.startswith("#") or s.startswith("//"):
+            continue
+        if s.startswith("{"):
+            try:
+                d = _j.loads(s)
+                if isinstance(d, dict):
+                    specs.append(d); continue
+            except Exception:
+                pass
+        if s.startswith("http://") or s.startswith("https://"):
+            specs.append({
+                "url": s, "method": "POST",
+                "json": {"mobile": "+91{target}", "phone": "+91{target}"},
+            })
+    if not specs:
+        raise ValueError("no valid API spec / URL found")
+    return specs
+
+
+def _register_bulk(specs: list) -> tuple:
+    added, failed = [], 0
+    for sp in specs:
+        try:
+            if not isinstance(sp, dict) or "url" not in sp:
+                failed += 1; continue
+            added.append(_register_user_api(sp))
+        except Exception:
+            failed += 1
+    return added, failed
+
 # ════════════════════════════════════════════════════════════
 # PARALLEL RUNNER
 # ════════════════════════════════════════════════════════════
@@ -1219,16 +1271,15 @@ async def cmd_wa(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
 # ════════════════════════════════════════════════════════════
 
 async def handle_text(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
-    # ➕ /addapi followup — first JSON message after tapping Add
+    # ➕ /addapi followup — accepts JSON object / array / JSONL / URL list
     if _ADD_WAIT.pop(update.effective_user.id, False):
-        import json as _j
         try:
-            spec = _j.loads(update.message.text.strip())
-            if not isinstance(spec, dict) or "url" not in spec:
-                raise ValueError("need dict with url")
-            name = _register_user_api(spec)
+            specs = _parse_api_payload(update.message.text or "")
+            added, failed = _register_bulk(specs)
             await update.message.reply_text(
-                f"✅ Added `{name}`. Total SMS APIs: `{len(SMS_APIS)}`",
+                f"✅ Added `{len(added)}` API(s) (failed: `{failed}`). "
+                f"Total SMS APIs: `{len(SMS_APIS)}`\n"
+                f"_Tip: bade list ke liye `.txt` / `.json` file bhi DM me bhej sakte ho._",
                 parse_mode="Markdown",
             )
         except Exception as e:
@@ -1352,27 +1403,68 @@ async def handle_button(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
 # ════════════════════════════════════════════════════════════
 
 async def cmd_addapi(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
-    import json as _j
     raw = " ".join(ctx.args) if ctx.args else ""
     if not raw:
         _ADD_WAIT[update.effective_user.id] = True
         await update.message.reply_text(
-            "➕ *Add API*\n\nAgli message me JSON bhejo. Example:\n\n"
-            "`{\"name\":\"MyApi\",\"url\":\"https://x.com/otp\",\"json\":{\"mobile\":\"+91{target}\"}}`",
+            "➕ *Add API(s)*\n\n"
+            "Agli message me kuch bhi bhejo:\n"
+            "• Ek JSON object\n"
+            "• JSON array `[ {..}, {..} ]`\n"
+            "• Ya seedha `.txt` / `.json` *file* DM me — har line pe JSON ya URL.\n\n"
+            "Example line: `{\"name\":\"MyApi\",\"url\":\"https://x.com/otp\",\"json\":{\"mobile\":\"+91{target}\"}}`",
             parse_mode="Markdown",
         )
         return
     try:
-        spec = _j.loads(raw)
-        if not isinstance(spec, dict) or "url" not in spec:
-            raise ValueError("need dict with url")
-        name = _register_user_api(spec)
+        specs = _parse_api_payload(raw)
+        added, failed = _register_bulk(specs)
         await update.message.reply_text(
-            f"✅ Added `{name}`. Total SMS APIs: `{len(SMS_APIS)}`",
+            f"✅ Added `{len(added)}` API(s) (failed: `{failed}`). "
+            f"Total SMS APIs: `{len(SMS_APIS)}`",
             parse_mode="Markdown",
         )
     except Exception as e:
         await update.message.reply_text(f"❌ Parse failed: `{e}`", parse_mode="Markdown")
+
+
+# ════════════════════════════════════════════════════════════
+# DOCUMENT HANDLER — DM me .txt / .json file bhejo, saari APIs add
+# ════════════════════════════════════════════════════════════
+
+async def handle_document(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
+    msg = update.message
+    if not msg or not msg.document:
+        return
+    doc = msg.document
+    fname = (doc.file_name or "file").lower()
+    if not (fname.endswith(".txt") or fname.endswith(".json")
+            or fname.endswith(".jsonl") or fname.endswith(".list")
+            or (doc.mime_type or "").startswith("text/")):
+        await msg.reply_text(
+            "❗ Sirf `.txt` / `.json` / `.jsonl` file support hai.",
+            parse_mode="Markdown",
+        )
+        return
+    if doc.file_size and doc.file_size > 2 * 1024 * 1024:
+        await msg.reply_text("❗ File 2MB se choti honi chahiye.")
+        return
+    try:
+        tg_file = await doc.get_file()
+        buf = await tg_file.download_as_bytearray()
+        raw = bytes(buf).decode("utf-8", errors="replace")
+        specs = _parse_api_payload(raw)
+        added, failed = _register_bulk(specs)
+        _ADD_WAIT.pop(update.effective_user.id, None)
+        preview = ", ".join(added[:5]) + (" …" if len(added) > 5 else "")
+        await msg.reply_text(
+            f"✅ File se `{len(added)}` API(s) add hui (failed: `{failed}`).\n"
+            f"Total SMS APIs: `{len(SMS_APIS)}`\n"
+            f"{('Added: `' + preview + '`') if added else ''}",
+            parse_mode="Markdown",
+        )
+    except Exception as e:
+        await msg.reply_text(f"❌ File parse failed: `{e}`", parse_mode="Markdown")
 
 # ════════════════════════════════════════════════════════════
 # HEALTH SERVER  (Heroku web dyno ko $PORT bind karna zaroori hai,
@@ -1444,6 +1536,7 @@ def main():
     app.add_handler(CommandHandler("addapi",  cmd_addapi))   # NEW: user-added APIs
     app.add_handler(CallbackQueryHandler(handle_button))
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_text))
+    app.add_handler(MessageHandler(filters.Document.ALL, handle_document))   # NEW: file se bulk add
 
     total = len(SMS_APIS) + len(CALL_APIS) + len(WA_APIS)
     logger.info(
