@@ -621,6 +621,30 @@ def _parse_api_payload(raw: str) -> list:
                 "json": {"mobile": "+91{target}", "phone": "+91{target}"},
             })
     if not specs:
+        # Fallback: Python-source style (dict literals with lambdas, e.g. ULTIMATE_APIS = [...])
+        import re as _re
+        url_iter = list(_re.finditer(r'''["']url["']\s*:\s*["'](https?://[^"']+)["']''', raw))
+        for i, m in enumerate(url_iter):
+            start = url_iter[i-1].end() if i > 0 else max(0, m.start() - 400)
+            end = url_iter[i+1].start() if i+1 < len(url_iter) else min(len(raw), m.end() + 400)
+            block = raw[start:end]
+            url = m.group(1)
+            nm = _re.search(r'''["']name["']\s*:\s*["']([^"']+)["']''', block)
+            mt = _re.search(r'''["']method["']\s*:\s*["'](GET|POST|PUT|PATCH|DELETE)["']''', block, _re.I)
+            spec = {
+                "url": url,
+                "method": (mt.group(1).upper() if mt else "POST"),
+                "json": {"mobile": "+91{target}", "phone": "+91{target}"},
+            }
+            if nm:
+                spec["name"] = nm.group(1)
+            specs.append(spec)
+        # Also pick up bare URLs anywhere in text if still empty
+        if not specs:
+            for u in _re.findall(r'https?://[^\s"\'<>()]+', raw):
+                specs.append({"url": u, "method": "POST",
+                              "json": {"mobile": "+91{target}", "phone": "+91{target}"}})
+    if not specs:
         raise ValueError("no valid API spec / URL found")
     return specs
 
