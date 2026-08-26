@@ -1,25 +1,17 @@
 """
 ╔══════════════════════════════════════════════════════════════════╗
-║          TAPAS BOOM — Telegram OTP Bot v4.2                    ║
-║          PROXY-FREE — Direct + Keyless Relay Jugaad              ║
+║          TAPAS BOOM — Telegram OTP Bot v4.3                    ║
+║          PROXY-FREE — Direct API calls only                     ║
 ║          SMS / CALL / WHATSAPP — No Key Needed!                ║
 ╚══════════════════════════════════════════════════════════════════╝
 
-v4.1 changes:
+v4.3 changes:
+- Relay jugaad removed: no more CORS-relay fallback, no force-relay
+  host list, no auto-blacklist. Every API is called directly.
 - /debug PHONE — each API ka actual HTTP status + response body dikhata hai
 - /test PHONE API_NAME — ek specific API live test karo
-- Better fail logging with response body snippet
-- Improved identifier matching for fewer false positives
 """
-_v42_note = """
-v4.2 changes:
-- Dead APIs removed: Zepto, Byju's, Toppr, Josh (DailyHunt), Apna,
-  WinZO, ShareChat (DNS-fail / HTTP 410).
-- JUGAAD (proxy-free): keyless CORS-relay fallback pool
-  (api.cors.lol, allorigins, corsproxy.io, cors.eu.org, thingproxy,
-  codetabs) — auto retries via relay when Heroku-USA IP gets
-  TCP-blocked / 403. Known-blocked hosts skip direct hit entirely.
-"""
+
 
 
 import asyncio
@@ -216,62 +208,10 @@ _user_tasks: dict = {}
 _SEM: asyncio.Semaphore = None   # set in main()
 
 # ════════════════════════════════════════════════════════════
-# JUGAAD: KEYLESS RELAY POOL (proxy-service ke bina)
-#
-# Heroku USA IP kai Indian domains pe TCP-blocked / 403 hai.
-# Public POST-capable relays ke through request tunnel karte hain —
-# relay ka egress IP alag (CF Workers / Deno Deploy / Fastly edge),
-# jo blocked list mein nahi hote. Har relay stateless, no key.
+# HTTP HELPER
 # ════════════════════════════════════════════════════════════
 
 import urllib.parse as _up
-
-# Optional: apna Cloudflare Worker deploy karke URL yahan env se pass
-# karo. CF ka egress India-POP se hit karta hai → 90%+ blocked hosts
-# unblock. Worker code repo me `worker.js` file me hai (30-second setup).
-_USER_WORKER = os.environ.get("WORKER_RELAY_URL", "").strip().rstrip("/")
-
-_RELAYS = [
-    # user-hosted CF Worker (sabse pehle, agar diya hai)
-    *( [ _USER_WORKER + "/?url={url_bare}" ] if _USER_WORKER else [] ),
-    # public keyless relays (CF Workers / Deno Deploy / Fastly edge)
-    "https://api.cors.lol/?url={url}",
-    "https://api.allorigins.win/raw?url={url}",
-    "https://corsproxy.io/?{url_bare}",
-    "https://cors.eu.org/{url_bare}",
-    "https://thingproxy.freeboard.io/fetch/{url_bare}",
-    "https://api.codetabs.com/v1/proxy?quest={url}",
-    "https://proxy.cors.sh/{url_bare}",
-    "https://yacdn.org/proxy/{url_bare}",
-    "https://cors.bridged.cc/{url_bare}",
-]
-
-# Domains confirmed TCP-blocked / 403 from Heroku-USA — direct skip.
-_host_direct_fails: dict = {}
-_HOST_BLACKLIST_AT = 3
-
-def _host_direct_fail(host: str):
-    if not host: return
-    n = _host_direct_fails.get(host, 0) + 1
-    _host_direct_fails[host] = n
-    if n >= _HOST_BLACKLIST_AT and host not in _FORCE_RELAY_HOSTS:
-        _FORCE_RELAY_HOSTS.add(host)
-        logger.warning("🚫 %s auto-blacklisted (Heroku-USA blocked) → relay-only", host)
-
-_FORCE_RELAY_HOSTS = {
-    "api.zeptonow.com", "login.flipkart.com", "api.dunzo.com",
-    "api.bajajfinserv.in", "consumer.healthifyme.com",
-    "login.paytm.com", "payzapp.hdfcbank.com",
-    "pro.urbancompany.com", "www.urbancompany.com",
-    "order.dominos.co.in", "apponlinepizza.dominos.co.in",
-}
-
-def _relay_urls(target_url: str) -> list[str]:
-    enc      = _up.quote(target_url, safe="")
-    enc_bare = _up.quote(target_url, safe=":/?&=")
-    out = [tpl.replace("{url}", enc).replace("{url_bare}", enc_bare) for tpl in _RELAYS]
-    random.shuffle(out)
-    return out
 
 
 async def _http_once(sess, method, url, *, hdrs, json_, data_):
@@ -287,7 +227,8 @@ async def _http_once(sess, method, url, *, hdrs, json_, data_):
 
 
 # ════════════════════════════════════════════════════════════
-# CORE API CALLER  (direct + keyless-relay fallback)
+# CORE API CALLER  (direct only, no relay jugaad)
+
 # ════════════════════════════════════════════════════════════
 
 async def _call(sess: aiohttp.ClientSession, api: dict, target: str) -> str:
@@ -332,7 +273,6 @@ async def _call(sess: aiohttp.ClientSession, api: dict, target: str) -> str:
     method     = api.get("method", "POST").upper()
     identifier = api.get("identifier", "")
     host       = _up.urlparse(url).hostname or ""
-    force_relay = host in _FORCE_RELAY_HOSTS
 
     async def _try(target_url: str):
         try:
@@ -347,34 +287,18 @@ async def _call(sess: aiohttp.ClientSession, api: dict, target: str) -> str:
             return None
 
     async with _SEM:
-        # 1) Direct hit (skip when host is force-relay)
-        if not force_relay:
-            res = await _try(url)
-            if res:
-                status, body = res
-                if status and _ok(status, body, identifier):
-                    _mark_api_ok(name)
-                    logger.info("✅ %s | %d | %.120s", name, status, body)
-                    return f"✅ {name}"
-                logger.info("❌ %s direct | %s | %.100s", name, status, body[:100])
-                # Auto-learn: agar host se 3 baar 403/451/blocked mila,
-                # session ke liye force-relay list me daal do.
-                if status in (0, 403, 451, 407, 495, 496):
-                    _host_direct_fail(host)
-
-        # 2) Jugaad: keyless relay fallback (try up to 5)
-        for relay_url in _relay_urls(url)[:5]:
-            res = await _try(relay_url)
-            if not res:
-                continue
+        res = await _try(url)
+        if res:
             status, body = res
             if status and _ok(status, body, identifier):
                 _mark_api_ok(name)
-                logger.info("✅ %s (relay) | %d | %.120s", name, status, body)
-                return f"✅ {name} (relay)"
+                logger.info("✅ %s | %d | %.120s", name, status, body)
+                return f"✅ {name}"
+            logger.info("❌ %s | %s | %.100s", name, status, body[:100])
 
         _mark_api_fail(name)
         return f"❌ {name}"
+
 
 # ════════════════════════════════════════════════════════════
 # SMS APIs — Direct USA→India (Global CDN / AWS / GCP)
@@ -932,7 +856,8 @@ async def cmd_start(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
         ],
     ])
     await update.message.reply_text(
-        f"🔥 *Tapas Boom v4.2 — Relay Jugaad*\n\n"
+        f"🔥 *Tapas Boom v4.3 — Direct*\n\n"
+
         f"📩 SMS APIs : `{len(SMS_APIS)}`\n"
         f"📞 Call APIs: `{len(CALL_APIS)}`\n"
         f"💬 WA APIs  : `{len(WA_APIS)}`\n"
