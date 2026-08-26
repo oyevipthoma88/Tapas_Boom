@@ -495,6 +495,76 @@ WA_APIS.extend(FRESH_WA_APIS)
 
 
 # ════════════════════════════════════════════════════════════
+# EXTRA_LIVE_APIS — additional Indian OTP endpoints (search-added)
+# ════════════════════════════════════════════════════════════
+
+EXTRA_SMS_APIS = [
+    {"name": 'Rapido', "url": 'https://api.rapido.bike/api/v2/customer/generate_otp', "method": 'POST', "origin": 'https://rapido.bike', "identifier": '', "json": {'mobile': '{target}', 'countryCode': '+91'}},
+    {"name": 'Uber India', "url": 'https://auth.uber.com/login/session', "method": 'POST', "origin": 'https://auth.uber.com', "identifier": '', "json": {'phoneNumber': '{target}', 'phoneCountryCode': '91'}},
+    {"name": 'Ola Foods', "url": 'https://www.olafoods.com/api/v1/otp/send', "method": 'POST', "origin": 'https://www.olafoods.com', "identifier": '', "json": {'mobile': '{target}'}},
+    {"name": 'BigBasket', "url": 'https://www.bigbasket.com/mapi/v3.0.4/gen-mobile-otp/', "method": 'POST', "origin": 'https://www.bigbasket.com', "identifier": '', "json": {'mobile_no': '{target}'}},
+    {"name": 'Zepto', "url": 'https://api.zeptonow.com/api/v2/user/send-otp', "method": 'POST', "origin": 'https://www.zeptonow.com', "identifier": '', "json": {'phoneNumber': '{target}', 'countryCode': '+91'}},
+    {"name": 'Blinkit', "url": 'https://blinkit.com/v3/accounts/generate_otp', "method": 'POST', "origin": 'https://blinkit.com', "identifier": '', "json": {'phone': '{target}'}},
+    {"name": 'Dunzo', "url": 'https://www.dunzo.com/api/v1/user/otp/generate', "method": 'POST', "origin": 'https://www.dunzo.com', "identifier": '', "json": {'phone_number': '{target}', 'country_code': '+91'}},
+    {"name": 'PolicyBazaar', "url": 'https://www.policybazaar.com/apis/nextgen/user/generateOtp', "method": 'POST', "origin": 'https://www.policybazaar.com', "identifier": '', "json": {'mobile': '{target}'}},
+    {"name": 'BankBazaar', "url": 'https://www.bankbazaar.com/api/otp/send', "method": 'POST', "origin": 'https://www.bankbazaar.com', "identifier": '', "json": {'mobile': '{target}'}},
+    {"name": 'CRED', "url": 'https://api.cred.club/v1/mobile/generate-otp', "method": 'POST', "origin": 'https://cred.club', "identifier": '', "json": {'mobile': '{target}', 'countryCode': '+91'}},
+    {"name": 'JioMart', "url": 'https://www.jiomart.com/mst/rest/v1/5/user/generate_otp', "method": 'POST', "origin": 'https://www.jiomart.com', "identifier": '', "json": {'mobile': '{target}'}},
+    {"name": 'FirstCry', "url": 'https://www.firstcry.com/svcs/user/GenerateOTP.svc/GetOTPForMobile', "method": 'POST', "origin": 'https://www.firstcry.com', "identifier": '', "json": {'mobile': '{target}'}},
+    {"name": 'HealthKart', "url": 'https://www.healthkart.com/rest/v3/user/otp/send', "method": 'POST', "origin": 'https://www.healthkart.com', "identifier": '', "json": {'mobile': '{target}'}},
+    {"name": 'PharmEasy', "url": 'https://api.pharmeasy.in/auth/otp/send/', "method": 'POST', "origin": 'https://pharmeasy.in', "identifier": '', "json": {'phone_no': '{target}', 'country_code': '+91'}},
+    {"name": 'Netmeds', "url": 'https://www.netmeds.com/api/v1/users/otp', "method": 'POST', "origin": 'https://www.netmeds.com', "identifier": '', "json": {'mobile': '{target}'}},
+    {"name": 'MakeMyTrip', "url": 'https://mapi.makemytrip.com/user/api/v1/generate_otp', "method": 'POST', "origin": 'https://www.makemytrip.com', "identifier": '', "json": {'mobile': '{target}', 'countryCode': '+91'}},
+    {"name": 'Goibibo', "url": 'https://www.goibibo.com/api/user/otp/send', "method": 'POST', "origin": 'https://www.goibibo.com', "identifier": '', "json": {'mobile': '{target}'}},
+    {"name": 'Yatra', "url": 'https://www.yatra.com/api/user/otp/send', "method": 'POST', "origin": 'https://www.yatra.com', "identifier": '', "json": {'mobile': '{target}'}},
+    {"name": 'RedBus', "url": 'https://m.redbus.in/api/loginotp', "method": 'POST', "origin": 'https://www.redbus.in', "identifier": '', "json": {'mobile': '{target}', 'countryCode': '+91'}},
+    {"name": 'IRCTC', "url": 'https://www.irctc.co.in/eticketing/protected/mapps1/otp/send', "method": 'POST', "origin": 'https://www.irctc.co.in', "identifier": '', "json": {'mobile': '{target}'}},
+    {"name": 'IndianRail', "url": 'https://enquiry.indianrail.gov.in/mntes/api/otp/send', "method": 'POST', "origin": 'https://enquiry.indianrail.gov.in', "identifier": '', "json": {'mobile': '{target}'}},
+    {"name": 'ShareChat', "url": 'https://sharechat.com/api/v1/user/otp/send', "method": 'POST', "origin": 'https://sharechat.com', "identifier": '', "json": {'phone': '{target}', 'countryCode': '+91'}},
+    {"name": 'Josh', "url": 'https://josh.in/api/v1/otp/send', "method": 'POST', "origin": 'https://josh.in', "identifier": '', "json": {'phone': '{target}'}},
+    {"name": 'Moj', "url": 'https://mojapp.in/api/v1/otp/send', "method": 'POST', "origin": 'https://mojapp.in', "identifier": '', "json": {'phone': '{target}'}},
+    {"name": 'Koo', "url": 'https://www.kooapp.com/apiV1/ranker/otp/send', "method": 'POST', "origin": 'https://www.kooapp.com', "identifier": '', "json": {'phone': '{target}', 'countryCode': '+91'}},
+    {"name": 'MPL', "url": 'https://www.mpl.live/api/v2/otp/send', "method": 'POST', "origin": 'https://www.mpl.live', "identifier": '', "json": {'mobile': '{target}'}},
+    {"name": 'WinZO', "url": 'https://www.winzogames.com/api/v1/otp/send', "method": 'POST', "origin": 'https://www.winzogames.com', "identifier": '', "json": {'mobile': '{target}'}},
+    {"name": 'MyGate', "url": 'https://prodapp.mygate.in/api/v1/otp/send', "method": 'POST', "origin": 'https://mygate.com', "identifier": '', "json": {'mobile': '{target}', 'country_code': '+91'}},
+    {"name": 'NoBroker', "url": 'https://www.nobroker.in/api/v1/user/otp/generate', "method": 'POST', "origin": 'https://www.nobroker.in', "identifier": '', "json": {'phone': '{target}'}},
+    {"name": '99acres', "url": 'https://www.99acres.com/api/otp/send', "method": 'POST', "origin": 'https://www.99acres.com', "identifier": '', "json": {'mobile': '{target}'}},
+    {"name": 'Naukri', "url": 'https://www.naukri.com/central-login-services/v0/generateOTP', "method": 'POST', "origin": 'https://www.naukri.com', "identifier": '', "json": {'mobile': '{target}'}},
+    {"name": 'Shine', "url": 'https://www.shine.com/otp/generate', "method": 'POST', "origin": 'https://www.shine.com', "identifier": '', "json": {'mobile': '{target}'}},
+    {"name": 'ApnaJobs', "url": 'https://api.apna.co/api/authentication/v1/otp/send', "method": 'POST', "origin": 'https://apna.co', "identifier": '', "json": {'phone_number': '{target}', 'country_code': '+91'}},
+    {"name": 'Urban Company', "url": 'https://www.urbancompany.com/api/customer/v2/otp/send', "method": 'POST', "origin": 'https://www.urbancompany.com', "identifier": '', "json": {'mobile': '{target}', 'country_code': '+91'}},
+    {"name": 'FnP', "url": 'https://www.fnp.com/api/user/otp/send', "method": 'POST', "origin": 'https://www.fnp.com', "identifier": '', "json": {'mobile': '{target}'}},
+]
+
+EXTRA_CALL_APIS = [
+    {"name": 'Rapido Call', "url": 'https://api.rapido.bike/api/v2/customer/generate_otp', "method": 'POST', "origin": 'https://rapido.bike', "identifier": '', "json": {'mobile': '{target}', 'countryCode': '+91', 'channel': 'call'}},
+    {"name": 'Zepto Call', "url": 'https://api.zeptonow.com/api/v2/user/send-otp', "method": 'POST', "origin": 'https://www.zeptonow.com', "identifier": '', "json": {'phoneNumber': '{target}', 'countryCode': '+91', 'channel': 'call'}},
+    {"name": 'BigBasket Call', "url": 'https://www.bigbasket.com/mapi/v3.0.4/gen-mobile-otp/', "method": 'POST', "origin": 'https://www.bigbasket.com', "identifier": '', "json": {'mobile_no': '{target}', 'channel': 'call'}},
+    {"name": 'CRED Call', "url": 'https://api.cred.club/v1/mobile/generate-otp', "method": 'POST', "origin": 'https://cred.club', "identifier": '', "json": {'mobile': '{target}', 'countryCode': '+91', 'channel': 'call'}},
+    {"name": 'PharmEasy Call', "url": 'https://api.pharmeasy.in/auth/otp/send/', "method": 'POST', "origin": 'https://pharmeasy.in', "identifier": '', "json": {'phone_no': '{target}', 'country_code': '+91', 'channel': 'call'}},
+    {"name": 'JioMart Call', "url": 'https://www.jiomart.com/mst/rest/v1/5/user/generate_otp', "method": 'POST', "origin": 'https://www.jiomart.com', "identifier": '', "json": {'mobile': '{target}', 'channel': 'call'}},
+    {"name": 'RedBus Call', "url": 'https://m.redbus.in/api/loginotp', "method": 'POST', "origin": 'https://www.redbus.in', "identifier": '', "json": {'mobile': '{target}', 'countryCode': '+91', 'channel': 'call'}},
+    {"name": 'MakeMyTrip Call', "url": 'https://mapi.makemytrip.com/user/api/v1/generate_otp', "method": 'POST', "origin": 'https://www.makemytrip.com', "identifier": '', "json": {'mobile': '{target}', 'countryCode': '+91', 'channel': 'call'}},
+    {"name": 'Urban Company Call', "url": 'https://www.urbancompany.com/api/customer/v2/otp/send', "method": 'POST', "origin": 'https://www.urbancompany.com', "identifier": '', "json": {'mobile': '{target}', 'country_code': '+91', 'channel': 'call'}},
+]
+
+EXTRA_WA_APIS = [
+    {"name": 'Rapido WA', "url": 'https://api.rapido.bike/api/v2/customer/generate_otp', "method": 'POST', "origin": 'https://rapido.bike', "identifier": '', "json": {'mobile': '{target}', 'countryCode': '+91', 'channel': 'whatsapp'}},
+    {"name": 'Zepto WA', "url": 'https://api.zeptonow.com/api/v2/user/send-otp', "method": 'POST', "origin": 'https://www.zeptonow.com', "identifier": '', "json": {'phoneNumber': '{target}', 'countryCode': '+91', 'channel': 'whatsapp'}},
+    {"name": 'CRED WA', "url": 'https://api.cred.club/v1/mobile/generate-otp', "method": 'POST', "origin": 'https://cred.club', "identifier": '', "json": {'mobile': '{target}', 'countryCode': '+91', 'channel': 'whatsapp'}},
+    {"name": 'PharmEasy WA', "url": 'https://api.pharmeasy.in/auth/otp/send/', "method": 'POST', "origin": 'https://pharmeasy.in', "identifier": '', "json": {'phone_no': '{target}', 'country_code': '+91', 'channel': 'whatsapp'}},
+    {"name": 'BigBasket WA', "url": 'https://www.bigbasket.com/mapi/v3.0.4/gen-mobile-otp/', "method": 'POST', "origin": 'https://www.bigbasket.com', "identifier": '', "json": {'mobile_no': '{target}', 'channel': 'whatsapp'}},
+    {"name": 'JioMart WA', "url": 'https://www.jiomart.com/mst/rest/v1/5/user/generate_otp', "method": 'POST', "origin": 'https://www.jiomart.com', "identifier": '', "json": {'mobile': '{target}', 'channel': 'whatsapp'}},
+    {"name": 'MakeMyTrip WA', "url": 'https://mapi.makemytrip.com/user/api/v1/generate_otp', "method": 'POST', "origin": 'https://www.makemytrip.com', "identifier": '', "json": {'mobile': '{target}', 'countryCode': '+91', 'channel': 'whatsapp'}},
+    {"name": 'Urban Company WA', "url": 'https://www.urbancompany.com/api/customer/v2/otp/send', "method": 'POST', "origin": 'https://www.urbancompany.com', "identifier": '', "json": {'mobile': '{target}', 'country_code': '+91', 'channel': 'whatsapp'}},
+]
+
+SMS_APIS.extend(EXTRA_SMS_APIS)
+CALL_APIS.extend(EXTRA_CALL_APIS)
+WA_APIS.extend(EXTRA_WA_APIS)
+
+
+# ════════════════════════════════════════════════════════════
 # USER-ADDED APIs (runtime, via /addapi command or ➕ Add button)
 # ════════════════════════════════════════════════════════════
 
