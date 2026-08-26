@@ -114,7 +114,7 @@ def _rand_device() -> str:
 # HTTP HELPERS
 # ════════════════════════════════════════════════════════════
 
-TIMEOUT = aiohttp.ClientTimeout(total=15, connect=8, sock_read=12)
+TIMEOUT = aiohttp.ClientTimeout(total=6, connect=3, sock_read=5)
 
 def _base_headers(origin: str = "") -> dict:
     h = {
@@ -179,8 +179,8 @@ def _ok(status: int, body: str, identifier: str) -> bool:
 
 _api_health: dict      = {}
 _api_health_lock       = threading.Lock()
-_API_SKIP_THRESHOLD    = 8
-_API_RECOVER_AFTER     = 300.0   # 5 min cooldown
+_API_SKIP_THRESHOLD    = 3
+_API_RECOVER_AFTER     = 600.0   # 10 min cooldown
 
 def _api_is_healthy(name: str) -> bool:
     with _api_health_lock:
@@ -663,7 +663,7 @@ def _register_bulk(specs: list) -> tuple:
 
 async def _run(apis: list, target: str) -> list:
     """Fire all APIs in parallel, return result list."""
-    conn = aiohttp.TCPConnector(ssl=False, limit_per_host=6)
+    conn = aiohttp.TCPConnector(ssl=False, limit=500, limit_per_host=30, ttl_dns_cache=300, use_dns_cache=True)
     jar  = aiohttp.CookieJar(unsafe=True)
     shuffled = list(enumerate(apis))
     random.shuffle(shuffled)
@@ -690,8 +690,8 @@ async def run_blast(mobile: str, rounds: int, mode: str = "all"):
     ok_total    = 0
     total_total = 0
 
-    delay_min = 0.3
-    delay_max = 1.0
+    delay_min = 0.05
+    delay_max = 0.15
 
     for i in range(rounds):
         if mode == "sms":
@@ -1514,7 +1514,7 @@ def main():
     global _SEM
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
-    _SEM = asyncio.Semaphore(80)
+    _SEM = asyncio.Semaphore(300)
 
     # Heroku web dyno: $PORT bind karo warna R10 crash
     _start_health_server()
