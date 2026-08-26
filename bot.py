@@ -12,6 +12,12 @@ v4.3 changes:
 - /test PHONE API_NAME — ek specific API live test karo
 """
 
+# JSON literal shims so Python can parse copied JS/JSON payloads
+null = None
+true = True
+false = False
+
+
 
 
 import asyncio
