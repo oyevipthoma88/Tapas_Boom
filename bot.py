@@ -118,25 +118,7 @@ def _rand_device() -> str:
 
 TIMEOUT = aiohttp.ClientTimeout(total=15, connect=8, sock_read=12)
 
-# Jio / Airtel / VI residential CIDR se random Indian IP.
-# App-layer geo/IP-country check ko bypass karta hai (Cloudflare-fronted
-# services, Akamai, etc. `CF-Connecting-IP` / `True-Client-IP` trust karte
-# hain). Note: TCP-level firewall block ko yeh nahi hataata — uske liye
-# relay pool (neeche) use hota hai.
-_IN_IP_RANGES = [
-    (0x1B800000, 0x1B8FFFFF),  # 27.56.0.0/12   Reliance Jio
-    (0x1B300000, 0x1B3FFFFF),  # 27.48.0.0/12   Airtel
-    (0x2A930000, 0x2A93FFFF),  # 42.147.0.0/16  BSNL
-    (0x6BE00000, 0x6BFFFFFF),  # 107.224.0.0/11 VI (Vodafone-Idea)
-    (0x3A200000, 0x3A2FFFFF),  # 58.32.0.0/12   Tata
-]
-def _rand_in_ip() -> str:
-    lo, hi = random.choice(_IN_IP_RANGES)
-    n = random.randint(lo, hi)
-    return f"{(n>>24)&0xff}.{(n>>16)&0xff}.{(n>>8)&0xff}.{n&0xff}"
-
 def _base_headers(origin: str = "") -> dict:
-    ip = _rand_in_ip()
     h = {
         "User-Agent":       random.choice(_UAS),
         "Accept":           "application/json, text/plain, */*",
@@ -144,17 +126,12 @@ def _base_headers(origin: str = "") -> dict:
         "Accept-Encoding":  "gzip, deflate",
         "Connection":       "keep-alive",
         "X-Request-ID":     str(uuid.uuid4()),
-        # Indian-IP spoof headers (upstream CDN / app layer)
-        "X-Forwarded-For":  ip,
-        "X-Real-IP":        ip,
-        "True-Client-IP":   ip,
-        "CF-Connecting-IP": ip,
-        "CF-IPCountry":     "IN",
     }
     if origin:
         h["Origin"]  = origin
         h["Referer"] = origin + "/"
     return h
+
 
 # ════════════════════════════════════════════════════════════
 # RESPONSE CHECKER
