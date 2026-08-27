@@ -1,11 +1,3 @@
-# Termux ke liye — is order mein install karo:
-# Step 1 (pkg se — pre-built):
-#   pkg install python-aiohttp
-#
-# Step 2 (pip se — ek ek karke):
-#   pip install python-telegram-bot
-#   pip install python-dotenv
-#   pip install dnspython
+# Install the Telegram bot runtime:
+#   pip install -r requirements-termux.txt
 python-telegram-bot
-python-dotenv==1.0.0
-dnspython==2.6.1

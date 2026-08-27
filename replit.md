@@ -1,45 +1,19 @@
-# [Project name]
+# Tapas Boom Bot
 
-_Replace the heading above with the project's name, and this line with one sentence describing what this app does for users._
+A small Telegram status bot with a deployment health endpoint. The project intentionally contains no third-party OTP, SMS, voice-call, WhatsApp, proxy, relay, or arbitrary-URL request functionality.
 
-## Run & Operate
+## Run
 
-- `pnpm --filter @workspace/api-server run dev` — run the API server (port 5000)
-- `pnpm run typecheck` — full typecheck across all packages
-- `pnpm run build` — typecheck + build all packages
-- `pnpm --filter @workspace/api-spec run codegen` — regenerate API hooks and Zod schemas from the OpenAPI spec
-- `pnpm --filter @workspace/db run push` — push DB schema changes (dev only)
-- Required env: `DATABASE_URL` — Postgres connection string
+Install the Python dependency with `pip install -r requirements.txt`, set `TELEGRAM_BOT_TOKEN`, and run `python bot.py`. The optional `PORT` variable controls the health endpoint and defaults to `8443`.
 
-## Stack
+## Commands
 
-- pnpm workspaces, Node.js 24, TypeScript 5.9
-- API: Express 5
-- DB: PostgreSQL + Drizzle ORM
-- Validation: Zod (`zod/v4`), `drizzle-zod`
-- API codegen: Orval (from OpenAPI spec)
-- Build: esbuild (CJS bundle)
+The bot supports `/start`, `/help`, and `/status`. Messages that are not commands receive a safe informational reply.
 
-## Where things live
+## Deployment
 
-_Populate as you build — short repo map plus pointers to the source-of-truth file for DB schema, API contracts, theme files, etc._
+`Dockerfile`, `Procfile`, `app.json`, and `fly.toml` provide deployment metadata for Python hosting providers. The health endpoint responds on `/` and `/health`-compatible hosting checks through the configured port.
 
-## Architecture decisions
+## Security note
 
-_Populate as you build — non-obvious choices a reader couldn't infer from the code (3-5 bullets)._
-
-## Product
-
-_Describe the high-level user-facing capabilities of this app once they exist._
-
-## User preferences
-
-_Populate as you build — explicit user instructions worth remembering across sessions._
-
-## Gotchas
-
-_Populate as you build — sharp edges, "always run X before Y" rules._
-
-## Pointers
-
-- See the `pnpm-workspace` skill for workspace structure, TypeScript setup, and package details
+No user-provided URL, phone number, API specification, or uploaded file is executed or forwarded. External request integrations remain disabled by design.
